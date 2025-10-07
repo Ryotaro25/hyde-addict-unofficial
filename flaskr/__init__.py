@@ -34,9 +34,6 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    from . import member
-    app.register_blueprint(member.bp)
-
     from . import top
     app.register_blueprint(top.bp)
 
@@ -48,5 +45,8 @@ def create_app(test_config=None):
 
     from . import magazines
     app.register_blueprint(magazines.bp)
+
+    from . import books
+    app.register_blueprint(books.bp)
 
     return app
