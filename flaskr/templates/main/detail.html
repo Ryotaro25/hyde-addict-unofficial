@@ -1,97 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }} - HYDE Unofficial Fan Site</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    <style>
-        :root {
-            --bg-1: #0A0A0A;
-            --bg-2: #1A1717;
-            --accent: #9E1B1B;
-            --text: #C4A484;
-        }
-        body {
-            background-color: var(--bg-1);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-        }
-        .section-title {
-            color: var(--accent);
-        }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col">
-    <header class="bg-[var(--bg-2)] text-[var(--text)] p-4 flex justify-between items-center">
-        <h1 class="text-2xl font-bold">HYDE Unofficial Fan Site</h1>
-        <nav class="space-x-4 hidden md:flex">
-            <a href="/music" class="hover:text-[var(--accent)]">Music Works</a>
-            <a href="/magazines" class="hover:text-[var(--accent)]">Magazines</a>
-            <a href="/books" class="hover:text-[var(--accent)]">Books</a>
-            <a href="/concerts" class="hover:text-[var(--accent)]">Concerts</a>
-            <a href="/places" class="hover:text-[var(--accent)]">Places</a>
-        </nav>
-    </header>
+{% extends "base.html" %}
+{% block title %}HYDE ADDICT UNOFFICIAL | Release{% endblock %}
 
-    <main class="flex-1 p-6 space-y-10">
-        <section>
-            <h2 class="text-2xl font-semibold section-title mb-6">{{ section_title }}</h2>
+{% block content %}
+<section class="glass-card p-4 rounded-lg">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="font-semibold accent text-lg">All Release</h2>
+    </div>
 
-            <!-- Dynamic Filter Section -->
-            {% if filters and filters|length > 0 %}
-            <div class="flex flex-wrap gap-4 mb-6">
-                {% for filter in filters %}
-                <label class="inline-flex items-center">
-                    <input 
-                        type="radio" 
-                        name="filter" 
-                        value="{{ filter.value }}" 
-                        {% if loop.first %}checked{% endif %}
-                        class="accent-[var(--accent)]"
-                        hx-get="{{ url_for(request.endpoint) }}?filter={{ filter.value }}"
-                        hx-target="#item-container"
-                        hx-swap="innerHTML"
-                    >
-                    <span class="ml-2">{{ filter.label }}</span>
-                </label>
-                {% endfor %}
-            </div>
-            {% endif %}
+    <!-- Artist Filter -->
+    <div class="mb-4 flex flex-wrap gap-3 items-center">
+        <label for="artist-filter" class="text-sm text-[var(--muted)]">アーティスト:</label>
+        <select id="artist-filter" name="artist"
+            class="bg-[var(--bg-2)] border border-white/10 rounded px-2 py-1 text-sm" hx-get="/music/filter"
+            hx-target="#music-list" hx-trigger="change" hx-include="this, [name='release_type']">
+            <option value="">全て</option>
+            {% for a in artists %}
+            <option value="{{ a['artist_name'] }}">{{ a['artist_name'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-            <!-- Main List Section -->
-            <div id="item-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for item in items[:66] %}
-                <div class="p-4 bg-[var(--bg-2)] rounded-xl shadow-md">
-                    <h3 class="font-bold text-lg mb-1">{{ item.main_text }}</h3>
-                    <ul class="text-sm space-y-1">
-                        {% for sub in item.sub_texts %}
-                        <li>- {{ sub }}</li>
-                        {% endfor %}
-                    </ul>
+    <div class="mb-4 flex flex-wrap gap-3 items-center">
+        <label for="artist-filter" class="text-sm text-[var(--muted)]">形態:</label>
+        <select id="artist-filter" name="release_type"
+            class="bg-[var(--bg-2)] border border-white/10 rounded px-2 py-1 text-sm" hx-get="/music/filter"
+            hx-target="#music-list" hx-trigger="change" hx-include="this, [name='artist']">
+            <option value="">全て</option>
+            <option value="single">シングル</option>
+            <option value="album">アルバム</option>
+            <option value="best">ベスト</option>
+            <option value="live-album">ライブ音源</option>
+        </select>
+    </div>
+
+    <!-- Release Items Container -->
+    <div id="music-list">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {% for m in release %}
+            <div class="block p-3 rounded hover:bg-white/3 text-sm cursor-default">
+                <div class="font-medium">{{ m['release_name'] }}</div>
+                <div class="text-xs text-[var(--muted)]">アーティスト : {{ m['artist_name'] }}</div>
+                <div class="text-xs text-[var(--muted)]">リリース日 : {{ m['formatted_date'] }}</div>
+                <div class="text-xs text-[var(--muted)]">
+                    形態 :
+                    {% if m['release_type'] == "single" %}
+                    シングル{% if m['only_digital'] == '1' %}(デジタル限定配信){% endif %}
+                    {% elif m['release_type'] == "album" %}
+                    アルバム{% if m['only_digital'] == '1' %}(デジタル限定配信){% endif %}
+                    {% elif m['release_type'] == "video" %}
+                    映像作品{% if m['only_digital'] == '1' %}(デジタル限定配信){% endif %}
+                    {% elif m['release_type'] == "best" %}
+                    ベストアルバム{% if m['only_digital'] == '1' %}(デジタル限定配信){% endif %}
+                    {% elif m['release_type'] == "live-album" %}
+                    ライブ音源{% if m['only_digital'] == '1' %}(デジタル限定配信){% endif %}
+                    {% else %}
+                    その他
+                    {% endif %}
                 </div>
-                {% endfor %}
             </div>
-
-            <!-- Read More Button -->
-            {% if items|length > 66 %}
-            <div class="text-center mt-6">
-                <button id="load-more" 
-                    class="px-6 py-2 bg-[var(--accent)] text-[var(--text)] rounded hover:opacity-90"
-                    hx-get="{{ url_for(request.endpoint) }}?limit={{ 66 + 66 }}"
-                    hx-target="#item-container"
-                    hx-swap="outerHTML"
-                >
-                    Read More
-                </button>
-            </div>
-            {% endif %}
-        </section>
-    </main>
-
-    <footer class="bg-[var(--bg-2)] text-center p-4 text-sm">
-        <p>&copy; {{ current_year }} HYDE Unofficial Fan Site. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

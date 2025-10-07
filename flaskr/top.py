@@ -15,7 +15,54 @@ def format_publish_dates(rows):
         dt = datetime.strptime(raw_date, "%Y-%m-%d")
         result.append({
             **dict(row),
+            "formatted_date": dt.strftime("%Y年%m月%d日")
+        })
+    return result
+
+def format_publish_dates_books(rows):
+    result = []
+    for row in rows:
+        raw_date = row['publish_date']
+        dt = datetime.strptime(raw_date, "%Y-%m-%d")
+        result.append({
+            **dict(row),
             "formatted_date": dt.strftime("%Y年%m月")
+        })
+    return result
+
+# 対象のItemごとに下記の文章を作成
+# 〇〇年前のyyyy年mm月dd日に、{アーティスト名}の｛アイテム名}が発売されました。
+# デジタルの場合
+# 〇〇年前のyyyy年mm月dd日に、{アーティスト名}の｛アイテム名}がデジタル配信されました。
+def make_text(rows, current_year):
+    result = []
+    for row in rows:
+        raw_date = row['publish_date']
+        dt = datetime.strptime(raw_date, "%Y-%m-%d")
+        year_diff = current_year - dt.year
+        year_diff_str = f"{year_diff}年前"
+        text = ""
+        release_type_str = ""
+        if row['release_type'] == 'single':
+            release_type_str = "シングル"
+        elif row['release_type'] == 'album':
+            release_type_str = "アルバム"
+        elif row['release_type'] == 'video':
+            release_type_str = "映像作品"
+        elif row['release_type'] == 'live-album':
+            release_type_str = "ライブ音源"
+        else:
+            release_type_str = "その他"
+
+
+        if row['only_digital'] == '1':
+            text = f"{year_diff_str}の{dt.strftime('%Y年%m月%d日')}に、{row['artist_name']}の{row['release_name']}がデジタル配信されました。"
+        else:
+            text = f"{year_diff_str}の{dt.strftime('%Y年%m月%d日')}に、{row['artist_name']}の{row['release_name']}が発売されました。"
+
+        result.append({
+            **dict(row),
+            "intro_text": text
         })
     return result
 
@@ -24,17 +71,45 @@ def index():
     current_year = datetime.now().year
 
     db = get_db()
-    posts = db.execute(
-        'SELECT p.id, title, body, created, author_id, username'
-        ' FROM post p JOIN user u ON p.author_id = u.id'
-        ' ORDER BY created DESC'
-    ).fetchall()
+    # 今日と同じ日付に発売されたものを取得する
+    today = datetime.now()
+    month_day = today.strftime("%m-%d")  # "-MM-DD"形式
+
+    releases_today = db.execute("""
+        SELECT
+        r.release_name,
+        r.release_type,
+        r.only_digital,
+        r.release_date as publish_date,
+        a.artist_name
+        FROM tb_release AS r
+        JOIN tb_artist AS a ON r.artist_id = a.artist_id
+        WHERE strftime('%m-%d', r.release_date) = ?
+        ORDER BY datetime(r.release_date) DESC;
+    """, (month_day,)).fetchall()
+    releases_today = format_publish_dates(releases_today)
+    releases_today = make_text(releases_today, today.year)
+
+    # CD, DVD, Blu-ray情報を取得する
+    musics = db.execute("""
+        SELECT
+        r.release_name,
+        r.release_type,
+        r.only_digital,
+        r.release_date as publish_date,
+        a.artist_name
+        FROM tb_release AS r
+        JOIN tb_artist AS a ON r.artist_id = a.artist_id
+        ORDER BY datetime(r.release_date) DESC
+        LIMIT 6;
+    """).fetchall()
+    musics = format_publish_dates(musics)
 
     # 公演情報を取得する
     performances = db.execute("""
         SELECT
         p.live_name,
-        p.live_date,
+        p.live_date as publish_date,
         p.live_place,
         a.artist_name
         FROM tb_performance as p
@@ -43,6 +118,7 @@ def index():
         ORDER BY datetime(p.live_date) DESC
         LIMIT 6;
         """).fetchall()
+    performances = format_publish_dates(performances)
 
     # 雑誌掲載情報を取得する
     magazines = db.execute("""
@@ -59,7 +135,7 @@ def index():
         ORDER BY datetime(p.publish_date) DESC
         LIMIT 6;
         """).fetchall()
-    magazines = format_publish_dates(magazines)
+    magazines = format_publish_dates_books(magazines)
 
     # 書籍情報を取得する
     books = db.execute("""
@@ -74,10 +150,13 @@ def index():
         ORDER BY datetime(b.publish_date) DESC
         LIMIT 6;
         """).fetchall()
-    books = format_publish_dates(books)
+    books = format_publish_dates_books(books)
 
+    site_url = "https://interviewcat.dev/learn/home"
     return render_template('main/index.html',
-                           posts=posts,
+                           site_url=site_url,
+                           releases_today=releases_today,
+                           musics=musics,
                            performances=performances,
                            magazines=magazines,
                            books=books,

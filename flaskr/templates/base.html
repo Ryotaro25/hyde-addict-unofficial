@@ -1,84 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 
 <head>
-  <!-- Google Tag Manager -->
-  <!-- End Google Tag Manager -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="hyde（HYDE）の非公式ファンサイトです">
-  <meta name="author" content="Ryotaro666">
-  <meta name="generator" content="Flask, htmx, Alpine.js">
-  <meta name="keywords" content="Hyde,L'Arc〜en〜Ciel,VAMPS,ハイド,ラルクアンシエル,ヴァンプス">
-  <link rel="canonical" href="http://aegroup.starfree.jp/">
-  <!-- Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Aぇ! group 非公式ファンサイト">
-  <meta property="og:image" content="http://aegroup.starfree.jp/assets/common/img/og.png">
-  <meta property="og:url" content="http://aegroup.starfree.jp/">
-  <meta property="og:site_name" content="Aぇ! group 非公式ファンサイト">
-  <meta property="og:description" content="Aぇ! group（関西ジュニア）の非公式ファンサイトです">
-  <!-- x -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Aぇ! group 非公式ファンサイト">
-  <meta name="twitter:image" content="http://aegroup.starfree.jp/assets/common/img/og.png">
-  <meta name="twitter:url" content="http://aegroup.starfree.jp/">
-  <meta name="twitter:description" content="Aぇ! group（関西ジュニア）の非公式ファンサイトです">
-  <title>HYDE ADDICT UNOFFICIAL</title>
-  <!-- CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="theme-color" content="#ffffff">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{% endblock %}</title>
 
-  <!-- --JS -->
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  {% block header_files %}{% endblock %}
+  <!-- Tailwind (Play CDN for convenience) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.3"></script>
+
+  <style>
+    /* Color theme variables (edit if you prefer alternate options) */
+    :root {
+      --bg-1: #0A0A0A;
+      /* primary background */
+      --bg-2: #1A1717;
+      /* secondary dark */
+      --accent: #9E1B1B;
+      /* accent (you can switch to #5E0200) */
+      --text: #C4A484;
+      /* main text (or #B8860B) */
+      --muted: #a08a6f;
+      --card: rgba(255, 255, 255, 0.03);
+    }
+
+    /* small helpers not covered by Tailwind CDN classes */
+    .site-bg {
+      background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color: var(--text);
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    .btn-accent {
+      background: linear-gradient(90deg, rgba(158, 27, 27, 0.95), rgba(94, 2, 2, 0.95));
+    }
+
+    .glass-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    /* responsive typographic tweaks */
+    @media (min-width: 1024px) {
+      .site-title {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* modal styles */
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  </style>
 </head>
 
-<body class="bg-default">
-  <!-- container -->
-  <div>
-    <header>
-      <div x-data="{ open: false }">
-        <div class="menu" @click="open = !open">
-          <div class="menu1"></div>
-          <div class="menu2"></div>
-          <div class="menu3"></div>
-        </div>
-        <nav x-show="open" x-transition:enter="transition ease-out duration-700"
-          x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-          x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-          x-transition:leave="transition ease-in duration-500"
-          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-          x-transition:leave-end="opacity-0 scale-95 translate-y-4" 
-        >
-          <div class="main_menus">
-            <ul>
-              <li><a href="#profile">Profile</a></li>
-              <li><a href="#video">Video</a></li>
-              <li><a href="#music">Music</a></li>
-              <li><a href="#work">Work</a></li>
-              <li class="font-50">
-                <a href="https://twitter.com/101ty010" target="_blank">
-                  <i class="fas fa-user"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+<body class="site-bg min-h-screen font-sans leading-relaxed"></body>
+<!-- Container -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between mb-8">
+    <div class="flex items-center gap-4">
+      <!--- 悪魔のシンボル -->
+      <div class="w-12 h-12 rounded-full flex items-center justify-center ring-1 ring-white/10 glass-card">
+        <!-- Inverted Pentagram (line-style with inner lines) -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-7 h-7 text-[var(--text)]">
+          <!-- Circle outline (optional for symmetry) -->
+          <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
+
+          <!-- Inverted pentagram lines -->
+          <polygon points="50,5 19,95 95,37 5,37 81,95" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linejoin="round" transform="rotate(180 50 50)" />
+        </svg>
       </div>
-    </header>
-    {% block content %}{% endblock %}
-    <div class="credit">
-      <p>なにかあれば<a href="https://wavebox.me/wave/8fdibintiwugt6v9/" target="_blank">こちら</a>から</p>
+
+      <div>
+        <h1 class="site-title text-xl sm:text-2xl font-semibold">HYDE ADDICT UNOFFICIAL</h1>
+        <p class="text-sm text-[var(--muted)]">HYDEさんの活動を纏めた非公式ファンサイト
+        </p>
+      </div>
     </div>
-    <!-- footer -->
-    <footer>
-      <p>このサイトは個人が非営利目的で管理・運営する非公式サイトです。特定の団体、または個人とは一切関係がありません。</p>
-    </footer>
-    <!--/ footer -->
-  </div>
+
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center gap-4 text-sm">
+      <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
+      <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Release</a>
+      <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
+      <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
+      <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
+      <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
+      <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
+    </nav>
+
+    <!-- Mobile menu button -->
+    <div class="md:hidden">
+      <button id="mobileMenuButton" class="px-2 py-2 rounded bg-white/3" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+  {% block content %}{% endblock %}
+</div>
 </body>
 
 </html>

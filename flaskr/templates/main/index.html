@@ -1,388 +1,311 @@
-<!doctype html>
-<html lang="ja">
+{% extends "base.html" %}
+{% block title %}HYDE ADDICT UNOFFICIAL | TOP{% endblock %}
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HYDE ADDICT UNOFFICIAL | Top</title>
+{% block content %}
 
-  <!-- Tailwind (Play CDN for convenience) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- HTMX -->
-  <script src="https://unpkg.com/htmx.org@1.9.3"></script>
 
-  <style>
-    /* Color theme variables (edit if you prefer alternate options) */
-    :root {
-      --bg-1: #0A0A0A;
-      /* primary background */
-      --bg-2: #1A1717;
-      /* secondary dark */
-      --accent: #9E1B1B;
-      /* accent (you can switch to #5E0200) */
-      --text: #C4A484;
-      /* main text (or #B8860B) */
-      --muted: #a08a6f;
-      --card: rgba(255, 255, 255, 0.03);
-    }
 
-    /* small helpers not covered by Tailwind CDN classes */
-    .site-bg {
-      background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
-      color: var(--text);
-    }
+<!-- Mobile nav (hidden by default) -->
+<div id="mobileMenu" class="md:hidden hidden mb-6">
+  <nav class="flex flex-col gap-2 text-sm">
+    <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
+    <a href="/profile" class="px-3 py-2 rounded hover:bg-white/5">Profile</a>
+    <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Release</a>
+    <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
+    <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
+    <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
+    <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
+    <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
+  </nav>
+</div>
 
-    .accent {
-      color: var(--accent);
-    }
+<!-- Main grid -->
+<main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Left column: Featured / News -->
+  <section class="lg:col-span-2">
 
-    .btn-accent {
-      background: linear-gradient(90deg, rgba(158, 27, 27, 0.95), rgba(94, 2, 2, 0.95));
-    }
-
-    .glass-card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-      border: 1px solid rgba(255, 255, 255, 0.04);
-    }
-
-    /* responsive typographic tweaks */
-    @media (min-width: 1024px) {
-      .site-title {
-        font-size: 1.6rem;
-      }
-    }
-
-    /* modal styles */
-    .modal-backdrop {
-      background: rgba(0, 0, 0, 0.7);
-    }
-  </style>
-</head>
-
-<body class="site-bg min-h-screen font-sans leading-relaxed">
-  <!-- Container -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-    <!-- Header -->
-    <header class="flex items-center justify-between mb-8">
-      <div class="flex items-center gap-4">
-        <!--- 悪魔のシンボル -->
-        <div class="w-12 h-12 rounded-full flex items-center justify-center ring-1 ring-white/10 glass-card">
-          <!-- Inverted Pentagram (line-style with inner lines) -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-7 h-7 text-[var(--text)]">
-            <!-- Circle outline (optional for symmetry) -->
-            <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
-
-            <!-- Inverted pentagram lines -->
-            <polygon 
-              points="50,5 19,95 95,37 5,37 81,95"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linejoin="round"
-              transform="rotate(180 50 50)"
-              />
-          </svg>
-        </div>
-
-        <div>
-          <h1 class="site-title text-xl sm:text-2xl font-semibold">HYDE ADDICT UNOFFICIAL</h1>
-          <p class="text-sm text-[var(--muted)]">HYDEさんの活動を纏めた非公式ファンサイト
-          </p>
-        </div>
-      </div>
-
-      <!-- Desktop nav -->
-      <nav class="hidden md:flex items-center gap-4 text-sm">
-        <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
-        <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Music</a>
-        <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
-        <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
-        <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
-        <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
-        <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
-      </nav>
-
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button id="mobileMenuButton" class="px-2 py-2 rounded bg-white/3" aria-label="Open menu">☰</button>
-      </div>
-    </header>
-
-    <!-- Mobile nav (hidden by default) -->
-    <div id="mobileMenu" class="md:hidden hidden mb-6">
-      <nav class="flex flex-col gap-2 text-sm">
-        <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
-        <a href="/profile" class="px-3 py-2 rounded hover:bg-white/5">Profile</a>
-        <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Music</a>
-        <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
-        <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
-        <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
-        <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
-        <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
-      </nav>
-    </div>
-
-    <!-- Main grid -->
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Left column: Featured / News -->
-      <section class="lg:col-span-2">
-        <div class="glass-card p-4 rounded-lg mb-6">
-
-          <h2 class="text-lg font-semibold accent">Latest / Featured</h2>
-          <p class="text-sm text-[var(--muted)] mb-4">Highlights across HYDE's projects. Click an item to view details.
-          </p>
-          <!-- Example grid of featured items (server renders items) -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {% for item in magazines %}
-            <article class="p-3 rounded-lg flex gap-3 items-start hover:scale-[1.01] transition-transform">
-              {% if item.thumb_url %}
-              <img src="{{ item.thumb_url }}" alt="{{ item.title }}" class="w-20 h-20 object-cover rounded" />
-              {% endif %}
-              <div class="flex-1">
-                <a hx-get="/item/{{ item.id }}" hx-target="#modal-content" hx-trigger="click"
-                  class="block text-sm font-medium hover:underline">{{ item.magazine_name }}</a>
-                <p class="text-xs text-[var(--muted)]">{{ item.magazine_name }}</p>
-                <div class="mt-2 text-[var(--muted)] text-xs">{{ item.publish_date }}</div>
-              </div>
-            </article>
-            {% else %}
-            <div class="text-sm text-[var(--muted)]">No featured items yet.</div>
-            {% endfor %}
+    <div class="glass-card p-4 rounded-lg mb-6">
+      <h2 class="text-lg font-semibold accent">What is Today?</h2>
+      <!-- <p class="text-sm text-[var(--muted)] mb-4">
+            Highlights across HYDE's projects. Click an item to view details.
+          </p> -->
+      <!-- Example grid of featured items -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {% for m in releases_today %}
+        <div class="block p-3 rounded hover:bg-white/3 text-sm cursor-default">
+          <div class="font-medium mb-1">{{ m.release_name }}</div>
+          <div class="text-xs text-[var(--muted)] whitespace-normal break-words leading-relaxed tracking-wide">
+            {{ m.intro_text }}
           </div>
         </div>
 
-        <!-- Sections (Profile, Music, Magazines, Books, Concerts, Places) each show latest 6 items -->
-        <div class="space-y-6">
+        <!-- Share buttons -->
+        <div class="flex flex-shrink-0 items-center gap-2 mt-0.5">
+          <a href="https://twitter.com/intent/tweet?text={{ m.release_name | urlencode }}%20{{ m.intro_text | urlencode }}%20{{ site_url | urlencode }}"
+            target="_blank" rel="noopener noreferrer" class="opacity-70 hover:opacity-100 transition"
+            title="Share on X">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M22.46 6.01c-.77.34-1.6.57-2.46.67a4.29 4.29 0 001.88-2.37 8.59 8.59 0 01-2.72 1.04A4.28 4.28 0 0015.5 4c-2.37 0-4.29 1.94-4.29 4.33 0 .34.04.67.1.99A12.16 12.16 0 013 5.1a4.3 4.3 0 001.33 5.75 4.23 4.23 0 01-1.95-.54v.05c0 2.08 1.45 3.82 3.38 4.22-.35.1-.73.16-1.12.16-.27 0-.54-.03-.8-.07.54 1.7 2.11 2.94 3.97 2.98A8.6 8.6 0 012 19.54a12.1 12.1 0 006.56 1.94c7.88 0 12.2-6.6 12.2-12.33 0-.19 0-.37-.01-.56A8.86 8.86 0 0022.46 6z" />
+            </svg>
+          </a>
+        </div>
+        {% else %}
+        <div class="text-sm text-[var(--muted)]">No featured items yet.</div>
+        {% endfor %}
+      </div>
+    </div>
 
-          <!-- Profile -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">Profile</h2>
-            </div>
 
-            <!-- HYDE Introduction Text -->
-            <div class="prose prose-invert max-w-none text-sm leading-relaxed space-y-3">
-              <p>
-                <strong>hyde（HYDE）</strong> は日本のミュージシャン、ボーカリスト、シンガーソングライター、音楽プロデューサー。
-              </p>
-              <p>
-                L'Arc〜en〜Cielのメインボーカリストとして、結成（1991年）以来活動。
-                同バンドでは「HONEY」「HEAVEN'S DRIVE」など数々のヒット曲を作曲し、作詞も担当する。
-                2001年からはHYDE名義でソロ活動を開始。当初の＜静＞（ソフトロック）な世界観から、現在は＜動＞（ハード・ロック/オルタナティヴ・ロック）と＜静＞の二面性を使い分けた多彩な音楽性を展開。
-                2008年にはK.A.Z（OblivionDust）とロックユニットVAMPSを結成し、海外へも積極的に進出。
-                2022年にはTHE LAST ROCKSTARSにも参加するなど、精力的に活動を続けている。
-                また、中島美嘉らに楽曲提供を行うほか、アパレルブランド「SWITCHBLADE」および「WaRLOCK」の設立など、音楽以外の分野でも才能を発揮している。
-              </p>
-              <p>
-                2021年1月29日まで和歌山県和歌山市初の「和歌山市ふるさと観光大使」としても活動。
-                2025年10月3日には、大阪・関西万博「和歌山DAY」にて和歌山県代表としてスペシャルライブを開催。
-              </p>
-            </div>
-          </section>
+    <!-- Sections (Profile, Release, Magazines, Books, Concerts, Places) each show latest 6 items -->
+    <div class="space-y-6">
 
-          <!-- Music works -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">Music</h2>
-              <a href="/music" class="text-sm text-[var(--muted)]">View all →</a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <!-- {% for m in magazines %}
-              <a href="/music/{{ m.id }}" class="block p-2 rounded hover:bg-white/3 text-sm">
-                <div class="font-medium">{{ m.title }}</div>
-                <div class="text-xs text-[var(--muted)]">{{ m.project }} • {{ m.year }}</div>
-              </a>
-              {% else %}
-              <div class="text-sm text-[var(--muted)]">No music items yet.</div>
-              {% endfor %} -->
-            </div>
-          </section>
+      <!-- Profile -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Profile</h2>
+        </div>
 
-          <!-- Concerts -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">Performed Concerts</h2>
-              <a href="/concerts" class="text-sm text-[var(--muted)]">View all →</a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {% for p in performances %}
-
-              <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
-                <div class="font-medium">{{ p.live_name }}</div>
-                <div class="text-xs text-[var(--muted)]">アーティスト : {{ p.artist_name }}</div>
-                <div class="text-xs text-[var(--muted)]">開催日 : {{ p.live_date }}</div>
-                <div class="text-xs text-[var(--muted)]">開催地 : {{ p.live_place }}</div>
-              </div>
-              {% else %}
-              <div class="text-sm text-[var(--muted)]">No concerts yet.</div>
-              {% endfor %}
-            </div>
-          </section>
-
-          <!-- Magazines -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">Magazine</h2>
-              <a href="/magazines" class="text-sm text-[var(--muted)]">View all →</a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {% for m in magazines %}
-              <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
-                <div class="font-medium">{{ m.magazine_name }}</div>
-                <div class="text-xs text-[var(--muted)]">アーティスト : {{ m.artist_name }}</div>
-                <div class="text-xs text-[var(--muted)]">出版社 : {{ m.publisher_name }}</div>
-                <div class="text-xs text-[var(--muted)]">出版日 : {{ m.publish_date }}</div>
-              </div>
-              {% else %}
-              <div class="text-sm text-[var(--muted)]">No magazine entries yet.</div>
-              {% endfor %}
-            </div>
-          </section>
-
-          <!-- Tie up -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">TIE UP</h2>
-              <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              準備中
-            </div>
-          </section>
-
-          <!-- テレビ出演情報 -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">TV</h2>
-              <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              準備中
-            </div>
-          </section>
-
-          <!-- Books (latest 6, with link to /books for detail list which contains all books) -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">Books</h2>
-              <a href="/books" class="text-sm text-[var(--muted)]">All books →</a>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {% for b in books %}
-              <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
-                <div class="font-medium">{{ b.book_name }}</div>
-                <div class="text-xs text-[var(--muted)]">アーティスト : {{ b.artist_name }}</div>
-                <div class="text-xs text-[var(--muted)]">出版社 : {{ b.publisher_name }}</div>
-                <div class="text-xs text-[var(--muted)]">出版日 : {{ b.publish_date }}</div>
-              </div>
-              {% else %}
-              <div class="text-sm text-[var(--muted)]">No books yet.</div>
-              {% endfor %}
-            </div>
-          </section>
-
-          <!-- Places related to HYDE -->
-          <section class="glass-card p-4 rounded-lg">
-            <div class="flex items-center justify-between mb-3">
-              <h2 class="font-semibold">HYDEさんゆかりの地</h2>
-              <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              準備中
-            </div>
-          </section>
-
+        <!-- HYDE Introduction Text -->
+        <div class="prose prose-invert max-w-none text-sm leading-relaxed space-y-3">
+          <p>
+            <strong>hyde（HYDE）</strong> は日本のミュージシャン、ボーカリスト、シンガーソングライター、音楽プロデューサー。
+          </p>
+          <p>
+            L'Arc〜en〜Cielのメインボーカリストとして、結成（1991年）以来活動。
+            同バンドでは「HONEY」「HEAVEN'S DRIVE」など数々のヒット曲を作曲し、作詞も担当する。
+            2001年からはHYDE名義でソロ活動を開始。当初の＜静＞（ソフトロック）な世界観から、現在は＜動＞（ハード・ロック/オルタナティヴ・ロック）と＜静＞の二面性を使い分けた多彩な音楽性を展開。
+            2008年にはK.A.Z（OblivionDust）とロックユニットVAMPSを結成し、海外へも積極的に進出。
+            2022年にはTHE LAST ROCKSTARSにも参加するなど、精力的に活動を続けている。
+            また、中島美嘉らに楽曲提供を行うほか、アパレルブランド「SWITCHBLADE」および「WaRLOCK」の設立など、音楽以外の分野でも才能を発揮している。
+          </p>
+          <p>
+            2021年1月29日まで和歌山県和歌山市初の「和歌山市ふるさと観光大使」としても活動。
+            2025年10月3日には、大阪・関西万博「和歌山DAY」にて和歌山県代表としてスペシャルライブを開催。
+          </p>
         </div>
       </section>
 
-      <!-- Right column: News sidebar & quick links -->
-      <aside class="space-y-6">
-        <div class="glass-card p-4 rounded-lg">
-          <h4 class="font-semibold accent">News</h4>
-          <ul class="space-y-2 text-sm">
-            <li>
-              <div class="hover:underline">非公式ファンサイト</div>
-              <div class="text-xs text-[var(--muted)]">
-                Ryotaroです。本業であるソフトウェアエンジニアの力を用いて何かHYDEさんのために出来ることはないかと考えサイト構築を行いました。構築以上に情報を集めることに集中していたのですが、自分自身まだまだ知らないことがたくさんありました(さすが35年のキャリア！)。このサイトを通じてHYDEさんの魅力がさらに多くの方に伝わることを願います。
-              </div>
-            </li>
-          </ul>
+      <!-- Release works -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Release</h2>
+          <a href="/music" class="text-sm text-[var(--muted)]">View all →</a>
         </div>
-
-        <div class="glass-card p-4 rounded-lg">
-          <h4 class="font-semibold">Quick Links</h4>
-          <div class="flex flex-col gap-2 text-sm mt-2">
-            <a href="/discography" class="text-[var(--muted)]">Discography</a>
-            <a href="/timeline" class="text-[var(--muted)]">Complete timeline</a>
-            <a href="/credits" class="text-[var(--muted)]">Credits & Collaborations</a>
-            <a href="/about" class="text-[var(--muted)]">About this site</a>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for m in musics %}
+          <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
+            <div class="font-medium">{{ m.release_name }}</div>
+            <div class="text-xs text-[var(--muted)]">アーティスト : {{ m.artist_name }}</div>
+            <div class="text-xs text-[var(--muted)]">リリース日 : {{ m.formatted_date }}</div>
+            <div class="text-xs text-[var(--muted)]">
+              種類 :
+              {% if m.release_type == "single" %}
+              シングル {% if m.only_digital == '1' %}(デジタル限定配信){% endif%}
+              {% elif m.release_type == "album" %}
+              アルバム {% if m.only_digital == '1' %}(デジタル限定配信){% endif%}
+              {% elif m.release_type == "video" %}
+              映像作品 {% if m.only_digital == '1' %}(デジタル限定配信){% endif%}
+              {% elif m.release_type == "best" %}
+              ベストアルバム {% if m.only_digital == '1' %}(デジタル限定配信){% endif%}
+              {% else %}
+              その他
+              {% endif %}
+            </div>
           </div>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No music items yet.</div>
+          {% endfor %}
         </div>
+      </section>
 
-        <div class="glass-card p-4 rounded-lg text-sm">
-          <h4 class="font-semibold">Site Notes</h4>
-          <p class="text-[var(--muted)] text-xs mt-2">
-            <strong>hyde（HYDE）</strong>さんの活動を応援するために、2025年に立ち上げた<strong>非公式</strong>のファンサイトです。<br>
-            個人が作成したファンサイトであり、アーティストご本人、及び所属する事務所・団体等とは一切関係ございません。<br>
-          </p>
+      <!-- Concerts -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Concerts</h2>
+          <a href="/concerts" class="text-sm text-[var(--muted)]">View all →</a>
         </div>
-      </aside>
-    </main>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for p in performances %}
 
-    <!-- Footer -->
-    <footer class="mt-10 text-sm text-[var(--muted)]">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
-        <div class="flex items-center gap-3">
-          <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
+          <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
+            <div class="font-medium">{{ p.live_name }}</div>
+            <div class="text-xs text-[var(--muted)]">アーティスト : {{ p.artist_name }}</div>
+            <div class="text-xs text-[var(--muted)]">開催日 : {{ p.formatted_date }}</div>
+            <div class="text-xs text-[var(--muted)]">開催地 : {{ p.live_place }}</div>
+          </div>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No concerts yet.</div>
+          {% endfor %}
         </div>
+      </section>
+
+      <!-- Magazines -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Magazine</h2>
+          <a href="/magazines" class="text-sm text-[var(--muted)]">View all →</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for m in magazines %}
+          <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
+            <div class="font-medium">{{ m.magazine_name }}</div>
+            <div class="text-xs text-[var(--muted)]">アーティスト : {{ m.artist_name }}</div>
+            <div class="text-xs text-[var(--muted)]">出版社 : {{ m.publisher_name }}</div>
+            <div class="text-xs text-[var(--muted)]">出版日 : {{ m.formatted_date }}</div>
+          </div>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No magazine entries yet.</div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Tie up -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">TIE UP</h2>
+          <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          準備中
+        </div>
+      </section>
+
+      <!-- テレビ出演情報 -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">TV</h2>
+          <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          準備中
+        </div>
+      </section>
+
+      <!-- Books (latest 6, with link to /books for detail list which contains all books) -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Books</h2>
+          <a href="/books" class="text-sm text-[var(--muted)]">All books →</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for b in books %}
+          <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
+            <div class="font-medium">{{ b.book_name }}</div>
+            <div class="text-xs text-[var(--muted)]">アーティスト : {{ b.artist_name }}</div>
+            <div class="text-xs text-[var(--muted)]">出版社 : {{ b.publisher_name }}</div>
+            <div class="text-xs text-[var(--muted)]">出版日 : {{ b.formatted_date }}</div>
+          </div>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No books yet.</div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Places related to HYDE -->
+      <section class="glass-card p-4 rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Places</h2>
+          <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          準備中
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <!-- Right column: News sidebar & quick links -->
+  <aside class="space-y-6">
+    <div class="glass-card p-4 rounded-lg">
+      <h4 class="font-semibold accent">News</h4>
+      <ul class="space-y-2 text-sm">
+        <li>
+          <div class="hover:underline">非公式ファンサイト</div>
+          <div class="text-xs text-[var(--muted)]">
+            Ryotaroです。2007年のMステスーパーライブの演奏を見てからファンになりました。本業であるソフトウェアエンジニアの力を用いて何かHYDEさんのために出来ることはないかと考えサイト構築を行いました。
+            構築中はこれまでにないほど情報収集をしていたのですが、自分自身まだまだ知らないことがたくさんありました(さすが35年のキャリア！)。
+            このサイトを通じてHYDEさんの魅力がさらに多くの方に伝わることを願います。
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="glass-card p-4 rounded-lg">
+      <h4 class="font-semibold">Quick Links</h4>
+      <div class="flex flex-col gap-2 text-sm mt-2">
+        <a href="https://larc-en-ciel.com/index.php" target="_blank" class="text-[var(--muted)]">L'Arc-en-Ciel
+          Official Website</a>
+        <a href="https://www.hyde.com/" target="_blank" class="text-[var(--muted)]">HYDE OFFICIAL</a>
+        <a href="http://www.vampsxxx.com/" target="_blank" class="text-[var(--muted)]">VAMPS OFFICIAL WEB SITE</a>
+        <a href="https://thelastrockstars.net/" target="_blank" class="text-[var(--muted)]">THE LAST ROCKSTARS
+          Official Website</a>
       </div>
-    </footer>
+    </div>
 
+    <div class="glass-card p-4 rounded-lg text-sm">
+      <h4 class="font-semibold">Site Notes</h4>
+      <p class="text-[var(--muted)] text-xs mt-2">
+        <strong>hyde（HYDE）</strong>さんの活動を応援するために、2025年に立ち上げた<strong>非公式</strong>のファンサイトです。<br>
+        個人が作成したファンサイトであり、アーティストご本人、及び所属する事務所・団体等とは一切関係ございません。<br>
+      </p>
+    </div>
+  </aside>
+</main>
+
+<!-- Footer -->
+<footer class="mt-10 text-sm text-[var(--muted)]">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
+    <div class="flex items-center gap-3">
+      <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
+    </div>
   </div>
+</footer>
 
-  <!-- Modal area for HTMX detail loads -->
-  <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
-    <div class="max-w-3xl w-full mx-4">
-      <div class="bg-[var(--bg-2)] rounded-lg overflow-hidden">
-        <div id="modal-content" class="p-6 text-sm text-[var(--text)]">
-          <!-- HTMX will load detailed HTML fragments here from routes like /item/<id> -->
-        </div>
-        <div class="p-4 flex justify-end">
-          <button id="modalClose" class="px-4 py-2 rounded bg-white/4">Close</button>
-        </div>
+
+
+<!-- Modal area for HTMX detail loads -->
+<div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">
+  <div class="max-w-3xl w-full mx-4">
+    <div class="bg-[var(--bg-2)] rounded-lg overflow-hidden">
+      <div id="modal-content" class="p-6 text-sm text-[var(--text)]">
+        <!-- HTMX will load detailed HTML fragments here from routes like /item/<id> -->
+      </div>
+      <div class="p-4 flex justify-end">
+        <button id="modalClose" class="px-4 py-2 rounded bg-white/4">Close</button>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    // Mobile menu toggle
-    const mobileBtn = document.getElementById('mobileMenuButton');
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileBtn?.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+<script>
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById('mobileMenuButton');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileBtn?.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
 
-    // HTMX: show modal when content is swapped into #modal-content
-    document.body.addEventListener('htmx:afterSwap', (e) => {
-      if (e.detail.target.id === 'modal-content') {
-        document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('modal').classList.add('flex');
-      }
-    });
+  // HTMX: show modal when content is swapped into #modal-content
+  document.body.addEventListener('htmx:afterSwap', (e) => {
+    if (e.detail.target.id === 'modal-content') {
+      document.getElementById('modal').classList.remove('hidden');
+      document.getElementById('modal').classList.add('flex');
+    }
+  });
 
-    document.getElementById('modalClose')?.addEventListener('click', () => {
-      document.getElementById('modal').classList.add('hidden');
-      document.getElementById('modal').classList.remove('flex');
-      document.getElementById('modal-content').innerHTML = '';
-    });
+  document.getElementById('modalClose')?.addEventListener('click', () => {
+    document.getElementById('modal').classList.add('hidden');
+    document.getElementById('modal').classList.remove('flex');
+    document.getElementById('modal-content').innerHTML = '';
+  });
 
-    // Close modal when clicking backdrop
-    document.getElementById('modal')?.addEventListener('click', (ev) => {
-      if (ev.target === ev.currentTarget) {
-        document.getElementById('modalClose').click();
-      }
-    });
-  </script>
-</body>
+  // Close modal when clicking backdrop
+  document.getElementById('modal')?.addEventListener('click', (ev) => {
+    if (ev.target === ev.currentTarget) {
+      document.getElementById('modalClose').click();
+    }
+  });
+</script>
 
-</html>
+{% endblock %}
