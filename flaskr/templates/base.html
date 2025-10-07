@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- Google Tag Manager -->
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="hyde（HYDE）の非公式ファンサイトです">
+  <meta name="author" content="Ryotaro666">
+  <meta name="generator" content="Flask, htmx, Alpine.js">
+  <meta name="keywords" content="Hyde,L'Arc〜en〜Ciel,VAMPS,ハイド,ラルクアンシエル,ヴァンプス">
+  <link rel="canonical" href="http://aegroup.starfree.jp/">
+  <!-- Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aぇ! group 非公式ファンサイト">
+  <meta property="og:image" content="http://aegroup.starfree.jp/assets/common/img/og.png">
+  <meta property="og:url" content="http://aegroup.starfree.jp/">
+  <meta property="og:site_name" content="Aぇ! group 非公式ファンサイト">
+  <meta property="og:description" content="Aぇ! group（関西ジュニア）の非公式ファンサイトです">
+  <!-- x -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aぇ! group 非公式ファンサイト">
+  <meta name="twitter:image" content="http://aegroup.starfree.jp/assets/common/img/og.png">
+  <meta name="twitter:url" content="http://aegroup.starfree.jp/">
+  <meta name="twitter:description" content="Aぇ! group（関西ジュニア）の非公式ファンサイトです">
+  <title>HYDE ADDICT UNOFFICIAL</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- --JS -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  {% block header_files %}{% endblock %}
+</head>
+
+<body class="bg-default">
+  <!-- container -->
+  <div>
+    <header>
+      <div x-data="{ open: false }">
+        <div class="menu" @click="open = !open">
+          <div class="menu1"></div>
+          <div class="menu2"></div>
+          <div class="menu3"></div>
+        </div>
+        <nav x-show="open" x-transition:enter="transition ease-out duration-700"
+          x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+          x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+          x-transition:leave="transition ease-in duration-500"
+          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+          x-transition:leave-end="opacity-0 scale-95 translate-y-4" 
+        >
+          <div class="main_menus">
+            <ul>
+              <li><a href="#profile">Profile</a></li>
+              <li><a href="#video">Video</a></li>
+              <li><a href="#music">Music</a></li>
+              <li><a href="#work">Work</a></li>
+              <li class="font-50">
+                <a href="https://twitter.com/101ty010" target="_blank">
+                  <i class="fas fa-user"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    {% block content %}{% endblock %}
+    <div class="credit">
+      <p>なにかあれば<a href="https://wavebox.me/wave/8fdibintiwugt6v9/" target="_blank">こちら</a>から</p>
+    </div>
+    <!-- footer -->
+    <footer>
+      <p>このサイトは個人が非営利目的で管理・運営する非公式サイトです。特定の団体、または個人とは一切関係がありません。</p>
+    </footer>
+    <!--/ footer -->
+  </div>
+</body>
+
+</html>

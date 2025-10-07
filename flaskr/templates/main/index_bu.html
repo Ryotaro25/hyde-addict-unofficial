@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="">
+  <div id="header-div">
+    <img id="header-img" src="{{ url_for('static', filename='/images/hau_header.png') }}" alt="">
+  </div>
+</section>
+
+<section class="prof" id="profile">
+  <div class="-inner">
+    <h2 class="">What is HYDE ADDICT UNOFFICIAL</h2>
+    <div class="group ">
+      <p>
+        <big>hyde（HYDE）</big>さんの活動を応援するために、2025年に立ち上げた<strong>非公式</strong>のファンサイトです。<br>
+        個人が作成したファンサイトであり、アーティストご本人、及び所属する事務所・団体等とは一切関係ございません。
+      </p>
+      <div class="group-link">
+        <a class="action -link" href="">このサイトについて</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="prof" id="profile">
+  <div class="-inner">
+    <h2 class="">Who IS HYDE</h2>
+    <div class="member">
+      <div class="_box  ">
+        <h3 class="prof-name">hyde（HYDE）</h3>
+        <div class="prof-txt">
+          <p>1969.1.29　和歌山県出身</p>
+          <span>
+            日本のミュージシャン、ボーカリスト、シンガーソングライター、音楽プロデューサー。</br>
+
+            L'Arc〜en〜Cielのメインボーカリストとして、結成（1991年）以来活動。</br>
+            同バンドでは「HONEY」「HEAVEN'S DRIVE」など数々のヒット曲を作曲し、作詞も担当する。</br></br>
+            2001年からはHYDE名義でソロ活動を開始。当初の＜静＞（ソフトロック）な世界観から、現在は＜動＞（ハード・ロック/オルタナティヴ・ロック）と＜静＞の二面性を使い分けた多彩な音楽性を展開。</br></br>
+            2008年にはK.A.Z（OblivionDust）とロックユニットVAMPSを結成し、海外へも積極的に進出。</br></br>
+            2022年にはTHE LAST ROCKSTARSにも参加するなど、精力的に活動を続けている。</br></br>
+
+            また、中島美嘉らに楽曲提供を行うほか、アパレルブランド「SWITCHBLADE」および「WaRLOCK」の設立など、音楽以外の分野でも才能を発揮している。
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="magazine" id="magazine">
+  <h2 class="">Magazine</h2>
+  <div class="-inner">
+    <p class="center font-150">雑誌掲載情報(最新6冊)</p>
+    <ul class="center">
+      {% for magazine in magazines %}
+      <li class="">
+        <p>{{ magazine.magazine_name}}</p>
+        <span>アーティスト：{{ magazine.artist_name}}</span>
+        <span>発売日：{{ magazine.formatted_date }} （{{ magazine.publisher_name}}）</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="group-link">
+    <a class="action -link" href="">過去の雑誌掲載情報</a>
+  </div>
+</section>
+
+<!-- Performance -->
+<section class="work" id="work">
+  <h2 class="">Performance</h2>
+  <div class="-inner">
+    <p class="center font-150">Live出演(本日を含め、すでに終了した6公演のみを掲載しております)</br>単独、帯同、フェス、対バン型も含む</p>
+    <div class="work-list  ">
+      {% for performance in performances %}
+      <dl class="">
+        <dt>
+          <h4 class="job-title">{{ performance.live_name }}</h4>
+        </dt>
+        <dd>
+          <ul>
+            <li><a href="https://www.asahi.co.jp/acchikocchi/" target="_blank"><i class="fas fa-home"></i></a></li>
+            <li><a href="https://twitter.com/achi_kochiA" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            </li>
+          </ul>
+          <p>掲載アーティスト：{{ performance.artist_name }}</p>
+          <span>発売日：{{ performance.live_date }} （{{ performance.live_place }}）</span>
+        </dd>
+      </dl>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="group-link">
+    <a class="action -link" href="/magazine">過去の雑誌掲載情報</a>
+  </div>
+</section>
+
+<!-- Magazine -->
+<section class="work" id="work">
+  <h2 class="">Magazine</h2>
+  <div class="-inner">
+    <p class="center font-150">雑誌掲載情報(出版日が最新のもの6冊)</p>
+    <div class="work-list  ">
+      {% for magazine in magazines %}
+      <dl class="">
+        <dt>
+          <h4 class="job-title">{{ magazine.magazine_name}}</h4>
+        </dt>
+        <dd>
+          <ul>
+            <li><a href="https://www.asahi.co.jp/acchikocchi/" target="_blank"><i class="fas fa-home"></i></a></li>
+            <li><a href="https://twitter.com/achi_kochiA" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+            </li>
+          </ul>
+          <p>掲載アーティスト：{{ magazine.artist_name}}</p>
+          <span>発売日：{{ magazine.formatted_date }} （{{ magazine.publisher_name}}）</span>
+        </dd>
+      </dl>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="group-link">
+    <a class="action -link" href="/magazine">過去の雑誌掲載情報</a>
+  </div>
+</section>
+
+{% endblock %}

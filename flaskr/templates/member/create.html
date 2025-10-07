@@ -1,0 +1,15 @@
+{% extends 'base_admin.html' %}
+
+{% block header_files %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='style_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Member Name</label>
+    <input name="member_name" id="member_name" value="{{ request.form['member_name'] }}" required>
+    <label for="body">Body</label>
+    <input name="birthdate" id="birthdate" type="date" value="{{ request.form['birthdate'] }}" required>
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

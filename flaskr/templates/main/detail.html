@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} - HYDE Unofficial Fan Site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <style>
+        :root {
+            --bg-1: #0A0A0A;
+            --bg-2: #1A1717;
+            --accent: #9E1B1B;
+            --text: #C4A484;
+        }
+        body {
+            background-color: var(--bg-1);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+        .section-title {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-[var(--bg-2)] text-[var(--text)] p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">HYDE Unofficial Fan Site</h1>
+        <nav class="space-x-4 hidden md:flex">
+            <a href="/music" class="hover:text-[var(--accent)]">Music Works</a>
+            <a href="/magazines" class="hover:text-[var(--accent)]">Magazines</a>
+            <a href="/books" class="hover:text-[var(--accent)]">Books</a>
+            <a href="/concerts" class="hover:text-[var(--accent)]">Concerts</a>
+            <a href="/places" class="hover:text-[var(--accent)]">Places</a>
+        </nav>
+    </header>
+
+    <main class="flex-1 p-6 space-y-10">
+        <section>
+            <h2 class="text-2xl font-semibold section-title mb-6">{{ section_title }}</h2>
+
+            <!-- Dynamic Filter Section -->
+            {% if filters and filters|length > 0 %}
+            <div class="flex flex-wrap gap-4 mb-6">
+                {% for filter in filters %}
+                <label class="inline-flex items-center">
+                    <input 
+                        type="radio" 
+                        name="filter" 
+                        value="{{ filter.value }}" 
+                        {% if loop.first %}checked{% endif %}
+                        class="accent-[var(--accent)]"
+                        hx-get="{{ url_for(request.endpoint) }}?filter={{ filter.value }}"
+                        hx-target="#item-container"
+                        hx-swap="innerHTML"
+                    >
+                    <span class="ml-2">{{ filter.label }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Main List Section -->
+            <div id="item-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for item in items[:66] %}
+                <div class="p-4 bg-[var(--bg-2)] rounded-xl shadow-md">
+                    <h3 class="font-bold text-lg mb-1">{{ item.main_text }}</h3>
+                    <ul class="text-sm space-y-1">
+                        {% for sub in item.sub_texts %}
+                        <li>- {{ sub }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Read More Button -->
+            {% if items|length > 66 %}
+            <div class="text-center mt-6">
+                <button id="load-more" 
+                    class="px-6 py-2 bg-[var(--accent)] text-[var(--text)] rounded hover:opacity-90"
+                    hx-get="{{ url_for(request.endpoint) }}?limit={{ 66 + 66 }}"
+                    hx-target="#item-container"
+                    hx-swap="outerHTML"
+                >
+                    Read More
+                </button>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="bg-[var(--bg-2)] text-center p-4 text-sm">
+        <p>&copy; {{ current_year }} HYDE Unofficial Fan Site. All rights reserved.</p>
+    </footer>
+</body>
+</html>
