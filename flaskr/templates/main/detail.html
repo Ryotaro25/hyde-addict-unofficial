@@ -10,13 +10,14 @@
     <!-- Artist Filter -->
     <div class="mb-4 flex flex-wrap gap-3 items-center">
         <label for="artist-filter" class="text-sm text-[var(--muted)]">アーティスト:</label>
-        <select id="artist-filter" name="artist"
+        <select id="artist-filter" name="artist_id"
             class="bg-[var(--bg-2)] border border-white/10 rounded px-2 py-1 text-sm" hx-get="/music/filter"
             hx-target="#music-list" hx-trigger="change" hx-include="this, [name='release_type']">
             <option value="">全て</option>
-            {% for a in artists %}
-            <option value="{{ a['artist_name'] }}">{{ a['artist_name'] }}</option>
-            {% endfor %}
+            <option value="1">L'Arc~en~Ciel</option>
+            <option value="2">HYDE</option>
+            <option value="3">VAMPS</option>
+            <option value="7">THE LAST ROCKSTARS</option>
         </select>
     </div>
 

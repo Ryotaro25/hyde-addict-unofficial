@@ -43,4 +43,7 @@ def create_app(test_config=None):
     from . import music
     app.register_blueprint(music.bp)
 
+    from . import concerts
+    app.register_blueprint(concerts.bp)
+
     return app

@@ -32,7 +32,9 @@ def index():
             ORDER BY datetime(r.release_date) DESC;
         """).fetchall()
     release = format_publish_dates(release)
+    current_year = datetime.now().year
     return render_template('main/detail.html',
+                            current_year=current_year,
                             release=release,
                             artists=artists)
 
@@ -40,7 +42,7 @@ def index():
 @bp.route('/filter')
 def music_filter():
     db = get_db()
-    artist = request.args.get('artist')
+    artist = request.args.get('artist_id')
     release_type = request.args.get('release_type')
 
     release = []
@@ -59,7 +61,7 @@ def music_filter():
     params = []
     
     if artist:
-        conditions.append("a.artist_name = ?")
+        conditions.append("a.artist_id = ?")
         params.append(artist)
     
     if release_type:

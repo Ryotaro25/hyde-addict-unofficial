@@ -3,22 +3,6 @@
 
 {% block content %}
 
-
-
-<!-- Mobile nav (hidden by default) -->
-<div id="mobileMenu" class="md:hidden hidden mb-6">
-  <nav class="flex flex-col gap-2 text-sm">
-    <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
-    <a href="/profile" class="px-3 py-2 rounded hover:bg-white/5">Profile</a>
-    <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Release</a>
-    <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
-    <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
-    <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
-    <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
-    <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
-  </nav>
-</div>
-
 <!-- Main grid -->
 <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
   <!-- Left column: Featured / News -->
@@ -178,7 +162,7 @@
           <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          準備中
+          これまでのTV出演歴(予定)
         </div>
       </section>
 
@@ -209,7 +193,7 @@
           <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          準備中
+          HYDEさんゆかりの地や聖地(予定)
         </div>
       </section>
 
@@ -253,18 +237,6 @@
     </div>
   </aside>
 </main>
-
-<!-- Footer -->
-<footer class="mt-10 text-sm text-[var(--muted)]">
-  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-    <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
-    <div class="flex items-center gap-3">
-      <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
-    </div>
-  </div>
-</footer>
-
-
 
 <!-- Modal area for HTMX detail loads -->
 <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop">

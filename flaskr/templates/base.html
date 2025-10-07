@@ -90,11 +90,12 @@
     <nav class="hidden md:flex items-center gap-4 text-sm">
       <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
       <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Release</a>
-      <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
-      <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
       <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
-      <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a>
-      <a href="/news" class="px-3 py-2 rounded btn-accent text-xs text-white">News</a>
+      <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
+      <!-- <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">TIE UP</a>
+      <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">TV</a> -->
+      <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
+      <!-- <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a> -->
     </nav>
 
     <!-- Mobile menu button -->
@@ -102,7 +103,30 @@
       <button id="mobileMenuButton" class="px-2 py-2 rounded bg-white/3" aria-label="Open menu">☰</button>
     </div>
   </header>
+
+  <!-- Mobile nav (hidden by default) -->
+  <div id="mobileMenu" class="md:hidden hidden mb-6">
+    <nav class="flex flex-col gap-2 text-sm">
+      <a href="/" class="px-3 py-2 rounded hover:bg-white/5">Home</a>
+      <a href="/music" class="px-3 py-2 rounded hover:bg-white/5">Release</a>
+      <a href="/concerts" class="px-3 py-2 rounded hover:bg-white/5">Concerts</a>
+      <a href="/magazines" class="px-3 py-2 rounded hover:bg-white/5">Magazines</a>
+      <!-- <a href="/" class="px-3 py-2 rounded hover:bg-white/5">TIE UP</a>
+      <a href="/" class="px-3 py-2 rounded hover:bg-white/5">TV</a> -->
+      <a href="/books" class="px-3 py-2 rounded hover:bg-white/5">Books</a>
+      <!-- <a href="/places" class="px-3 py-2 rounded hover:bg-white/5">Places</a> -->
+    </nav>
+  </div>
   {% block content %}{% endblock %}
+  <!-- Footer -->
+<footer class="mt-10 text-sm text-[var(--muted)]">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
+    <div class="flex items-center gap-3">
+      <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
+    </div>
+  </div>
+</footer>
 </div>
 </body>
 
