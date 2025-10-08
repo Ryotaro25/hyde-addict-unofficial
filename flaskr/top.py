@@ -152,7 +152,7 @@ def index():
         """).fetchall()
     books = format_publish_dates_books(books)
 
-    site_url = "https://interviewcat.dev/learn/home"
+    site_url = "https://hyde-addict-unofficial.onrender.com/"
     return render_template('main/index.html',
                            site_url=site_url,
                            releases_today=releases_today,
