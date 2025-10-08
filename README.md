@@ -1,10 +1,10 @@
-![](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white)
-![](https://img.shields.io/badge/Tailwind_CSS-grey?style=for-the-badge&logo=tailwind-css&logoColor=38B2AC)
-![](https://img.shields.io/badge/htmx-grey?style=for-the-badge&logo=htmx-css&logoColor=38B2AC)
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](#)
+[![Flask](https://img.shields.io/badge/Flask-000?logo=flask&logoColor=fff)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-%2338B2AC.svg?logo=tailwind-css&logoColor=white)](#)
+[![HTMX](https://img.shields.io/badge/HTMX-36C?logo=htmx&logoColor=fff)](#)
 
-
-# hyde-addict-unofficial
+# サイト概要
 L'Arc~en~Ciel、ソロ活動、VAMPSと幅広く活動されるHYDEさんの情報を纏めたWebサイトです。
 
 # サイトURL
+

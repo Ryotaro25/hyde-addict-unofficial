@@ -66,6 +66,8 @@
   <!-- Header -->
   <header class="flex items-center justify-between mb-8">
     <div class="flex items-center gap-4">
+
+
       <!--- 悪魔のシンボル -->
       <div class="w-12 h-12 rounded-full flex items-center justify-center ring-1 ring-white/10 glass-card">
         <!-- Inverted Pentagram (line-style with inner lines) -->
@@ -78,12 +80,13 @@
             stroke-linejoin="round" transform="rotate(180 50 50)" />
         </svg>
       </div>
-
-      <div>
-        <h1 class="site-title text-xl sm:text-2xl font-semibold">HYDE ADDICT UNOFFICIAL</h1>
-        <p class="text-sm text-[var(--muted)]">HYDEさんの活動を纏めた非公式ファンサイト
-        </p>
-      </div>
+      <a href="/">
+        <div>
+          <h1 class="site-title text-xl sm:text-2xl font-semibold">HYDE ADDICT UNOFFICIAL</h1>
+          <p class="text-sm text-[var(--muted)]">HYDEさんの活動を纏めた非公式ファンサイト
+          </p>
+        </div>
+      </a>
     </div>
 
     <!-- Desktop nav -->
@@ -119,14 +122,14 @@
   </div>
   {% block content %}{% endblock %}
   <!-- Footer -->
-<footer class="mt-10 text-sm text-[var(--muted)]">
-  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-    <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
-    <div class="flex items-center gap-3">
-      <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
+  <footer class="mt-10 text-sm text-[var(--muted)]">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>© {{ current_year }} HYDE ADDICT UNOFFICIAL</div>
+      <div class="flex items-center gap-3">
+        <a href="https://x.com/intent/user?screen_name=ryo_krkrkr" target="_blank">Contact</a>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 </div>
 </body>
 
