@@ -171,7 +171,7 @@ def index():
         """).fetchall()
     news_archives = format_publish_dates(news_archives)
 
-    site_url = "https://hyde-addict-unofficial.onrender.com/"
+    site_url = "https://hyde-addict-unofficial.com/"
     return render_template('main/index.html',
                            site_url=site_url,
                            videos=videos,

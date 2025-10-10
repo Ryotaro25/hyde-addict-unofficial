@@ -12,15 +12,15 @@
   <meta property="og:description" content="HYDEに関する出演情報・ライブ履歴・ディスコグラフィをまとめた非公式ファンサイト。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://hyde-addict-unofficial.com/">
-  <!-- <meta property="og:image" content="https://hyde-addict-unofficial.com/static/og-image.jpg"> -->
+  <meta property="og:image" content="{{ url_for('static', filename='images/hau_logo.png', _external=True) }}">
   <meta property="og:site_name" content="Hyde Addict Unofficial">
 
   <!-- Twitterカード -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Hyde Addict Unofficial">
-  <meta name="twitter:description" content="HYDEの音楽活動を時系列でまとめた非公式ファンサイト。">
-  <!-- <meta name="twitter:image" content="https://hyde-addict-unofficial.com/static/og-image.jpg">
-  <meta name="twitter:site" content="@hyde_addict"> -->
+  <meta name="twitter:description" content="HYDEの音楽活動を支えるための非公式ファンサイト。">
+  <meta name="twitter:image" content="{{ url_for('static', filename='images/hau_logo.png', _external=True) }}">
+  <!-- <meta name="twitter:site" content="@hyde_addict"> -->
 
   <title>{% block title %}{% endblock %}</title>
 
