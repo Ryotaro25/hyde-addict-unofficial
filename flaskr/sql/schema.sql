@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS tb_book;
 DROP TABLE IF EXISTS tb_song;
 DROP TABLE IF EXISTS tb_release;
 DROP TABLE IF EXISTS tb_track;
+DROP TABLE IF EXISTS tb_news_archive;
 
 CREATE TABLE "tb_member" (
   "member_id" INTEGER UNIQUE,
@@ -80,4 +81,15 @@ CREATE TABLE "tb_track" (
   "release_id" INTEGER,
   "song_id" INTEGER,
   "track_number" INTEGER
+);
+
+CREATE TABLE "tb_news_archive" (
+  "news_archive_id" INTEGER,
+  "site_name" TEXT,
+  "news_archive_title" TEXT,
+  "news_archive_summary" TEXT,
+  "news_archive_link" TEXT,
+  "news_archive_og_img" TEXT,
+  "publish_date" TEXT,
+  PRIMARY KEY("news_archive_id" AUTOINCREMENT)
 );

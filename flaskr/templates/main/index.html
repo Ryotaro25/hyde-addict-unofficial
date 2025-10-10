@@ -109,6 +109,11 @@
           <h2 class="font-semibold accent">Concerts</h2>
           <a href="/concerts" class="text-sm text-[var(--muted)]">View all →</a>
         </div>
+
+        <p class="text-xs text-[var(--muted)] mb-3">
+          今日までに開催された公演です。View allに予定の公演情報も含めてまとめています。
+        </p>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {% for p in performances %}
 
@@ -130,6 +135,11 @@
           <h2 class="font-semibold accent">Magazine</h2>
           <a href="/magazines" class="text-sm text-[var(--muted)]">View all →</a>
         </div>
+
+        <p class="text-xs text-[var(--muted)] mb-3">
+          L'Arc〜en〜Ciel、HYDEさん、VAMPSが表紙の歴代の雑誌をまとめています。
+        </p>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {% for m in magazines %}
           <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
@@ -161,8 +171,12 @@
           <h2 class="font-semibold accent">TV</h2>
           <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
         </div>
+        <p class="text-xs text-[var(--muted)] mb-3">
+          これまでのTV出演歴をまとめる予定です。違法アップロード動画などは取り扱いません。
+        </p>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          これまでのTV出演歴(予定)
+          準備中
         </div>
       </section>
 
@@ -172,6 +186,9 @@
           <h2 class="font-semibold accent">Books</h2>
           <a href="/books" class="text-sm text-[var(--muted)]">View all →</a>
         </div>
+        <p class="text-xs text-[var(--muted)] mb-3">
+          HYDEさんに関連する公式・非公式の書籍をまとめています。
+        </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {% for b in books %}
           <div class="block p-2 rounded hover:bg-white/3 text-sm cursor-default">
@@ -192,10 +209,71 @@
           <h2 class="font-semibold accent">Places</h2>
           <!-- <a href="/places" class="text-sm text-[var(--muted)]">View all →</a> -->
         </div>
+        <p class="text-xs text-[var(--muted)] mb-3">
+          HYDEさんゆかりの地やPVのロケ地などまとめて表示する予定です。
+        </p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          HYDEさんゆかりの地や聖地(予定)
+          準備中
         </div>
       </section>
+
+      <!-- Videos -->
+      <section class="glass-card p-4 rounded-lg mt-6">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Videos</h2>
+          <!-- <a href="/videos" class="text-sm text-[var(--muted)]">View all →</a> -->
+        </div>
+
+        <p class="text-xs text-[var(--muted)] mb-3">
+          日毎にランダムに6件PVが表示されます。クリックすると公式Youtubeに移動します。
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for v in videos %}
+          <a href="https://www.youtube.com/watch?v={{ v.video_id }}" target="_blank"
+            class="block rounded overflow-hidden hover:bg-white/5 transition">
+            <img src="https://img.youtube.com/vi/{{ v.video_id }}/hqdefault.jpg" alt="{{ v.title }}"
+              class="w-full aspect-video object-cover rounded-t">
+            <div class="p-2 text-sm">
+              <div class="font-medium line-clamp-2">{{ v.title }}</div>
+            </div>
+          </a>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No videos yet.</div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- new archives -->
+      <section class="glass-card p-4 rounded-lg mt-6">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold accent">Web News</h2>
+          <!-- <a href="/news" class="text-sm text-[var(--muted)]">View all →</a> -->
+        </div>
+
+        <p class="text-xs text-[var(--muted)] mb-3">
+          HYDEさんに関するWeb上ニュースやメディア記事のアーカイブです。クリックで外部サイトに移動します。
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {% for n in news_archives %}
+          <a href="{{ n.news_archive_link }}" target="_blank" class="block rounded hover:bg-white/5 transition overflow-hidden">
+            {% if n.news_archive_og_img %}
+            <img src="{{ n.news_archive_og_img }}" alt="{{ n.news_archive_title }}" class="w-full aspect-video object-cover rounded-t">
+            {% endif %}
+            <div class="p-2 text-sm">
+              <div class="font-medium line-clamp-2 mb-1">{{ n.news_archive_title }}</div>
+              <div class="text-xs text-[var(--muted)] line-clamp-3">{{ n.news_archive_summary }}</div>
+              <div class="text-xs text-[var(--muted)] line-clamp-3">掲載サイト : {{ n.site_name }}</div>
+              <div class="text-xs text-[var(--muted)] line-clamp-3">掲載日 : {{ n.formatted_date }}</div>
+            </div>
+          </a>
+          {% else %}
+          <div class="text-sm text-[var(--muted)]">No news yet.</div>
+          {% endfor %}
+        </div>
+      </section>
+      
 
     </div>
   </section>
@@ -206,7 +284,7 @@
       <h4 class="font-semibold accent">News</h4>
       <ul class="space-y-2 text-sm">
         <li>
-          <div class="hover:underline">非公式ファンサイト</div>
+          <div class="hover:underline">非公式ファンサイト : 2025/10/10</div>
           <div class="text-xs text-[var(--muted)]">
             Ryotaroです。2007年のMステスーパーライブの演奏を見てからファンになりました。本業であるソフトウェアエンジニアの力を用いて何かHYDEさんのために出来ることはないかと考えサイト構築を行いました。
             構築中はこれまでにないほど情報収集をしていたのですが、自分自身まだまだ知らないことがたくさんありました(さすが35年のキャリア！)。
@@ -232,6 +310,7 @@
       <h4 class="font-semibold accent">Site Notes</h4>
       <p class="text-[var(--muted)] text-xs mt-2">
         <strong>hyde（HYDE）</strong>さんの活動を応援するために、2025年に立ち上げた<strong>非公式</strong>のファンサイトです。<br>
+        違法アップロード動画やファンクラブ限定情報といった著作権に抵触するものは取り上げません。<br>
         個人が作成したファンサイトであり、アーティストご本人、及び所属する事務所・団体等とは一切関係ございません。<br>
       </p>
     </div>
@@ -251,33 +330,5 @@
     </div>
   </div>
 </div>
-
-<script>
-  // Mobile menu toggle
-  const mobileBtn = document.getElementById('mobileMenuButton');
-  const mobileMenu = document.getElementById('mobileMenu');
-  mobileBtn?.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
-
-  // HTMX: show modal when content is swapped into #modal-content
-  document.body.addEventListener('htmx:afterSwap', (e) => {
-    if (e.detail.target.id === 'modal-content') {
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal').classList.add('flex');
-    }
-  });
-
-  document.getElementById('modalClose')?.addEventListener('click', () => {
-    document.getElementById('modal').classList.add('hidden');
-    document.getElementById('modal').classList.remove('flex');
-    document.getElementById('modal-content').innerHTML = '';
-  });
-
-  // Close modal when clicking backdrop
-  document.getElementById('modal')?.addEventListener('click', (ev) => {
-    if (ev.target === ev.currentTarget) {
-      document.getElementById('modalClose').click();
-    }
-  });
-</script>
 
 {% endblock %}

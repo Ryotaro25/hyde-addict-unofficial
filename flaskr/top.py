@@ -5,7 +5,8 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
-from datetime import datetime
+from datetime import datetime, date
+from .utils import get_random_videos
 
 bp = Blueprint('top', __name__)
 def format_publish_dates(rows):
@@ -38,8 +39,8 @@ def make_text(rows, current_year):
     result = []
     for row in rows:
         raw_date = row['publish_date']
-        dt = datetime.strptime(raw_date, "%Y-%m-%d")
-        year_diff = current_year - dt.year
+        dt_date = datetime.strptime(raw_date, "%Y-%m-%d").date() 
+        year_diff = current_year - dt_date.year
         year_diff_str = f"{year_diff}年前"
         text = ""
         release_type_str = ""
@@ -56,9 +57,9 @@ def make_text(rows, current_year):
 
 
         if row['only_digital'] == '1':
-            text = f"{year_diff_str}の{dt.strftime('%Y年%m月%d日')}に、{row['artist_name']}の{row['release_name']}がデジタル配信されました。"
+            text = f"{year_diff_str}の{dt_date.strftime('%Y年%m月%d日')}に、{row['artist_name']}の【{row['release_name']}】デジタル配信されました。"
         else:
-            text = f"{year_diff_str}の{dt.strftime('%Y年%m月%d日')}に、{row['artist_name']}の{row['release_name']}が発売されました。"
+            text = f"{year_diff_str}の{dt_date.strftime('%Y年%m月%d日')}に、{row['artist_name']}の【{row['release_name']}】が発売されました。"
 
         result.append({
             **dict(row),
@@ -152,12 +153,32 @@ def index():
         """).fetchall()
     books = format_publish_dates_books(books)
 
+    videos = get_random_videos()
+
+    # news arachives
+    news_archives = db.execute("""
+        SELECT
+        n.news_archive_id,
+        n.site_name,
+        n.news_archive_title,
+        n.news_archive_summary,
+        n.news_archive_link,
+        n.news_archive_og_img,
+        n.publish_date
+        FROM tb_news_archive AS n
+        ORDER BY datetime(n.publish_date) DESC
+        LIMIT 6;
+        """).fetchall()
+    news_archives = format_publish_dates(news_archives)
+
     site_url = "https://hyde-addict-unofficial.onrender.com/"
     return render_template('main/index.html',
                            site_url=site_url,
+                           videos=videos,
                            releases_today=releases_today,
                            musics=musics,
                            performances=performances,
                            magazines=magazines,
                            books=books,
+                           news_archives=news_archives,
                            current_year=current_year)
